@@ -1,0 +1,104 @@
+<html>
+<head>
+	<title>NFT Wallet</title>
+</head>
+<body>
+	<h1>Deploy Your NFT</h1>
+  <p>Enter your Token Name: <input type="text" id="tokenName" value=""></p>
+  
+  <p>Enter your NFT Name: <input type="text" id="nftName" value=""></p>
+  
+  <p>Upload Image(.png): <input type="file" id="fileButton1" value="upload" accept=".png"></p>
+  
+  <p>Upload NFT File(.txt): <input type="file" id="fileButton2" value="upload" accept=".txt"></p>
+  
+  <br><br>
+  <button id="submit" type="button" onclick="submit()">Submit</button>
+  <p id="status"></p>
+  <br>
+  <p id="key"></p>
+</body>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyC2rzsz1kE7UdS4J0xxl4s3dMM8pbgydgc",
+    authDomain: "nft-ipfs.firebaseapp.com",
+    projectId: "nft-ipfs",
+    storageBucket: "nft-ipfs.appspot.com",
+    messagingSenderId: "996214046998",
+    appId: "1:996214046998:web:edbc62a4388630b254d037"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  function submit() {
+    try{
+    document.getElementById("key").innerHTML = "";
+    var file1=document.getElementById('fileButton1').files[0];
+    var file2=document.getElementById('fileButton2').files[0];
+    var token=document.getElementById('tokenName').value;
+    var nft=document.getElementById('nftName').value;
+    if(!file1||!file2||token==''||nft==''){
+    document.getElementById("status").innerHTML = "Upload Failed!";
+    }else{
+    var file3 = new File([token,",",nft], "name.txt", {
+      type: "text/plain",
+    });
+
+
+    const dateTime = Date.now();
+    const timestamp = Math.floor(dateTime);
+    
+
+    var obj = new Object();
+    obj.id = timestamp
+    obj.tokenNam = token;
+    obj.nftNam = nft;
+    obj.imgUrl = "https://firebasestorage.googleapis.com/v0/b/nft-ipfs.appspot.com/o/"+timestamp+"%2Fimage.png?alt=media";
+    obj.nftUrl = "https://firebasestorage.googleapis.com/v0/b/nft-ipfs.appspot.com/o/"+timestamp+"%2Fnft.txt?alt=media";
+
+
+    fetch("https://firebasestorage.googleapis.com/v0/b/nft-ipfs.appspot.com/o/userdata.json?alt=media")
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      data.push(obj);
+      var file4 = new Blob([JSON.stringify(data)], {
+      type: "application/json",
+      });
+      var storageRef = firebase.storage().ref('userdata.json');
+      storageRef.put(file4);
+    })
+    .catch((err) => {
+      document.getElementById("status").innerHTML = "Upload Failed!";
+      throw "Fetch error!!"
+    });
+
+
+
+
+
+    var storageRef = firebase.storage().ref(timestamp+'/image.png');
+    storageRef.put(file1);
+    var storageRef = firebase.storage().ref(timestamp+'/nft.txt');
+    storageRef.put(file2);
+    var storageRef = firebase.storage().ref(timestamp+'/name.txt');
+    storageRef.put(file3);
+
+    document.getElementById("key").innerHTML = "Please copy the code:"+timestamp;
+    document.getElementById("status").innerHTML = "Upload Successful!";
+    }
+    }
+    catch (e) {
+    document.getElementById("status").innerHTML = "Upload Failed!";
+    }
+
+}
+
+
+  
+</script>
+</html>
