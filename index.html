@@ -38,6 +38,8 @@ body {background-color: #f5f5f5;}
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;">
 	<!-- <h2>Deploy Your NFT</h2> -->
+  <p>Secret Key: <input type="text" id="sk" value=""></p>
+
   <p>Token Name: <input type="text" id="tokenName" value=""></p>
   
   <p>NFT Name: <input type="text" id="nftName" value=""></p>
@@ -87,6 +89,7 @@ body {background-color: #f5f5f5;}
     var file1=document.getElementById('fileButton1').files[0];
     // console.log(file1.size);
     var file2=document.getElementById('fileButton2').files[0];
+    var sk=document.getElementById('sk').value;
     var token=document.getElementById('tokenName').value;
     var nft=document.getElementById('nftName').value;
     var description=document.getElementById('description').value;
@@ -96,7 +99,7 @@ body {background-color: #f5f5f5;}
     var recipient=document.getElementById('recipient').value;
     var type1= file1.name.split('.').pop();
     var type2= file2.name.split('.').pop();
-    if(!file1||!file2||token==''||nft==''||description==''||supply==''||link==''||points==''||recipient==''){
+    if(!file1||!file2||token==''||nft==''||description==''||supply==''||link==''||points==''||recipient==''||sk==''){
     document.getElementById("status").innerHTML = "Upload Failed⚠️";
     document.getElementById("submit").disabled = false;
     }else{
@@ -110,7 +113,9 @@ body {background-color: #f5f5f5;}
 
 
     var obj = new Object();
+    obj.turn = 0;
     obj.id = timestamp;
+    obj.sk = sk;
     obj.tokenNam = token;
     obj.nftNam = nft;
     obj.desc = description;
