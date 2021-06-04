@@ -133,7 +133,7 @@ body {background-color: #f5f5f5;}
   
     lockref.delete().then(() => {
     // Lock Available
-    fetch("https://firebasestorage.googleapis.com/v0/b/nft-ipfs.appspot.com/o/userdata.json?alt=media")
+    fetch("https://nftipfs.herokuapp.com/userd")
     .then((response) => {
       return response.json()
     })
