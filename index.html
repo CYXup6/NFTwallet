@@ -179,6 +179,8 @@ body {background-color: #f5f5f5;}
 
     document.getElementById("key").innerHTML = "Please copy the code:"+timestamp;
     document.getElementById("status").innerHTML = "🟢Upload Successful!";
+    setTimeout(function(){fetch('https://nftipfs.herokuapp.com/user');},1500)
+    setTimeout(function(){fetch('https://nftipfs.herokuapp.com/user');},1000)
     setTimeout(function(){document.getElementById("submit").disabled = false;},1500)
 
   }).catch((error) => {
