@@ -40,6 +40,8 @@ body {background-color: #f5f5f5;}
 	<!-- <h2>Deploy Your NFT</h2> -->
   <p>Secret Key: <input type="text" id="sk" value=""></p>
 
+  <p>Address: <input type="text" id="address" value=""></p>
+
   <p>Token Name: <input type="text" id="tokenName" value=""></p>
   
   <p>NFT Name: <input type="text" id="nftName" value=""></p>
@@ -90,6 +92,7 @@ body {background-color: #f5f5f5;}
     // console.log(file1.size);
     var file2=document.getElementById('fileButton2').files[0];
     var sk=document.getElementById('sk').value;
+    var address=document.getElementById('address').value;
     var token=document.getElementById('tokenName').value;
     var nft=document.getElementById('nftName').value;
     var description=document.getElementById('description').value;
@@ -99,7 +102,7 @@ body {background-color: #f5f5f5;}
     var recipient=document.getElementById('recipient').value;
     var type1= file1.name.split('.').pop();
     var type2= file2.name.split('.').pop();
-    if(!file1||!file2||token==''||nft==''||description==''||supply==''||link==''||points==''||recipient==''||sk==''){
+    if(!file1||!file2||token==''||nft==''||description==''||supply==''||link==''||points==''||recipient==''||sk==''||address==''){
     document.getElementById("status").innerHTML = "Upload Failed⚠️";
     document.getElementById("submit").disabled = false;
     }else{
@@ -116,6 +119,7 @@ body {background-color: #f5f5f5;}
     obj.turn = 0;
     obj.id = timestamp;
     obj.sk = sk;
+    obj.address = address
     obj.tokenNam = token;
     obj.nftNam = nft;
     obj.desc = description;
