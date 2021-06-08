@@ -50,12 +50,8 @@ body {background-color: #f5f5f5;}
 
   <p>Total Supply: <input type="text" id="supply" value=""></p>
 
-  <p>External Link: <input type="text" id="link" value=""></p>
+  <p>Creator: <input type="text" id="creator" value=""></p>
 
-  <p>Seller Fee Basis Points: <input type="text" id="points" value=""></p>
-
-  <p>Fee Recipient: <input type="text" id="recipient" value=""></p>
-  
   <p>Upload Asset(Image/Audio): <input type="file" id="fileButton1" value="upload" accept="image/*,audio/*"></p>
   
   <p>Upload Cover(Image): <input type="file" id="fileButton2" value="upload" accept="image/*"></p>
@@ -97,12 +93,10 @@ body {background-color: #f5f5f5;}
     var nft=document.getElementById('nftName').value;
     var description=document.getElementById('description').value;
     var supply=document.getElementById('supply').value;
-    var link=document.getElementById('link').value;
-    var points=document.getElementById('points').value;
-    var recipient=document.getElementById('recipient').value;
+    var creator=document.getElementById('creator').value;
     var type1= file1.name.split('.').pop();
     var type2= file2.name.split('.').pop();
-    if(!file1||!file2||token==''||nft==''||description==''||supply==''||link==''||points==''||recipient==''||sk==''||address==''){
+    if(!file1||!file2||token==''||nft==''||description==''||supply==''||creator==''||sk==''||address==''){
     document.getElementById("status").innerHTML = "Upload Failed⚠️";
     document.getElementById("submit").disabled = false;
     }else{
@@ -124,9 +118,7 @@ body {background-color: #f5f5f5;}
     obj.nftNam = nft;
     obj.desc = description;
     obj.supply = supply;
-    obj.exLink = link;
-    obj.points = points;
-    obj.reci = recipient;
+    obj.creator = creator;
     obj.assetType = file1.type;
     obj.coverType = file2.type;
     obj.submitTime = datetime;
