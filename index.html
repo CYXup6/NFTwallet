@@ -31,7 +31,7 @@ body {background-color: #f5f5f5;}
 <body>
   <div class="header">
     <h2>分散式系統期末專題</h2>
-    <h1>Create Your NFT with IPFS</h1>
+    <h1>Mint Token</h1>
   </div>
 
   <div style="text-align:center;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -42,13 +42,15 @@ body {background-color: #f5f5f5;}
 
   <p>Address: <input type="text" id="address" value=""></p>
 
-  <p>Token Name: <input type="text" id="tokenName" value=""></p>
+  <p>Contract Address: <input type="text" id="scaddress" value=""></p>
+
+  <!-- <p>Token Name: <input type="text" id="tokenName" value=""></p> -->
   
-  <p>NFT Name: <input type="text" id="nftName" value=""></p>
+  <!-- <p>NFT Name: <input type="text" id="nftName" value=""></p> -->
 
   <p>Description: <input type="text" id="description" value=""></p>
 
-  <p>Total Supply: <input type="text" id="supply" value=""></p>
+  <!-- <p>Total Supply: <input type="text" id="supply" value=""></p> -->
 
   <p>Creator: <input type="text" id="creator" value=""></p>
 
@@ -65,7 +67,7 @@ body {background-color: #f5f5f5;}
 
 </body>
 
-
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-storage.js"></script>
 <script>
@@ -79,7 +81,26 @@ body {background-color: #f5f5f5;}
   };
   firebase.initializeApp(firebaseConfig);
 
-  function submit() {
+  async function get_name(contract_address){
+    contract = web3.eth.contract(address=contract_address, abi=abi)
+    output = contract.methods.name().call()
+    return output
+  }
+
+  async function  get_symbol(contract_address){
+
+    var contract = new Contract(abi,contract_address);
+    output = contract.methods.symbol().call()
+    return output 
+  }
+
+  async function total_supply(contract_address){
+    contract = web3.eth.contract(address=contract_address, abi=abi)
+    output = await contract.methods.totalSupply().call();
+    return output
+  }
+
+  async function submit() {
     try{
     document.getElementById("submit").disabled = true;
     document.getElementById("status").innerHTML = "";
@@ -89,18 +110,33 @@ body {background-color: #f5f5f5;}
     var file2=document.getElementById('fileButton2').files[0];
     var sk=document.getElementById('sk').value;
     var address=document.getElementById('address').value;
-    var token=document.getElementById('tokenName').value;
-    var nft=document.getElementById('nftName').value;
+    var scaddress=document.getElementById('scaddress').value;
+    // var token=document.getElementById('tokenName').value;
+    // var nft=document.getElementById('nftName').value;
     var description=document.getElementById('description').value;
-    var supply=document.getElementById('supply').value;
+    // var supply=document.getElementById('supply').value;
     var creator=document.getElementById('creator').value;
     var type1= file1.name.split('.').pop();
     var type2= file2.name.split('.').pop();
-    if(!file1||!file2||token==''||nft==''||description==''||supply==''||creator==''||sk==''||address==''){
+    if(!file1||!file2||description==''||creator==''||sk==''||address==''||scaddress==''){
     document.getElementById("status").innerHTML = "Upload Failed⚠️";
     document.getElementById("submit").disabled = false;
     }else{
-
+    var abi = await fetch('https://weippig.github.io/mypage/Contract_ABI', {
+      method: 'GET',
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      return data;
+    })
+    // var address = '0xd149fb62a43ee78d52170520e62885fb9f6788e8';
+    var web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/cc17683cf69d4ae3b7be4f99c8790e41'));
+    var contract = new web3.eth.Contract(abi,address);
+    var nft = await contract.methods.name().call();
+    var token = await contract.methods.symbol().call();
+    var supply = await contract.methods.totalSupply().call();
 
 
     const dateTime = Date.now();
@@ -114,6 +150,7 @@ body {background-color: #f5f5f5;}
     obj.id = timestamp;
     obj.sk = sk;
     obj.address = address
+    obj.scaddress = scaddress
     obj.tokenNam = token;
     obj.nftNam = nft;
     obj.desc = description;
@@ -199,6 +236,5 @@ body {background-color: #f5f5f5;}
 }
 
 
-  
 </script>
 </html>
