@@ -132,7 +132,7 @@ body {background-color: #f5f5f5;}
       return data;
     })
     // var address = '0xd149fb62a43ee78d52170520e62885fb9f6788e8';
-    var web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/cc17683cf69d4ae3b7be4f99c8790e41'));
+    var web3 = new Web3(new Web3.providers.HttpProvider('https://rinkeby.infura.io/v3/e178b744d5984a0881e1b7f04d485f46'));
     var contract = new web3.eth.Contract(abi,address);
     var nft = await contract.methods.name().call();
     var token = await contract.methods.symbol().call();
